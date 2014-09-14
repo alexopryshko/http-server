@@ -8,7 +8,6 @@
 #include <thread>
 #include <string>
 
-#include "http/HTTPRequest.h"
 
 
 
@@ -75,7 +74,7 @@ static void accept_error_cb( struct evconnlistener *listener, void *arg )
 
 int main( int argc, char **argv )
 {
-    /*struct event_base *base;
+    struct event_base *base;
     struct evconnlistener *listener;
     struct sockaddr_in sin;
     int port = 8080;
@@ -102,15 +101,7 @@ int main( int argc, char **argv )
     }
     evconnlistener_set_error_cb( listener, accept_error_cb );
 
-    event_base_dispatch( base );*/
-
-
-    std::string data;
-    data = "GET /test.css HTTP/1.1\nHost: 127.0.0.1:8080\nConnection: keep-alive\nCache-Control: no-cache";
-
-    HTTPRequest request(data);
-
-
+    event_base_dispatch( base );
 
     return 0;
 }

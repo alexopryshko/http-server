@@ -1,4 +1,3 @@
-#include <Foundation/Foundation.h>
 #include "ResponseHeader.h"
 
 ResponseHeader::ResponseHeader() {
@@ -23,20 +22,21 @@ void ResponseHeader::setStatusCode(int statusCode, std::string reasonPhrase) {
 std::string ResponseHeader::getHeader() {
     std::string buffer = "";
     buffer += httpVersion;
-    buffer += characters::SP;
-    buffer += (std::string) statusCode;
-    buffer += characters::SP;
+    buffer += SplitChars::SP;
+    buffer += std::to_string(statusCode);
+    buffer += SplitChars::SP;
     buffer += reasonPhrase;
 
-    buffer += characters::LF;
+    buffer += SplitChars::LF;
     buffer += "Connection: close";
-    buffer += characters::LF;
-    buffer += "Date: " + ctime(&date);
-    buffer += characters::LF;
+    buffer += SplitChars::LF;
+    std::string strData(ctime(&date));
+    buffer += "Date: " + strData;
+    buffer += SplitChars::LF;
     buffer += "Server: " + server;
-    buffer += characters::LF;
-    buffer += "Content-Length: " + contentLength;
+    buffer += SplitChars::LF;
+    buffer += "Content-Length: " + std::to_string(contentLength);
     buffer += "Content-Type: " + contentType + "; " + "charset='utf-8'";
-    buffer += characters::CRLF + characters::CRLF;
+    buffer += SplitChars::CRLF + SplitChars::CRLF;
     return buffer;
 }

@@ -6,6 +6,6 @@ set(CMAKE_CXX_FLAGS "-std=c++0x")
 
 
 set(SOURCE_FILES main.cpp http/ResponseHeader.cpp http/Response.cpp http/RequestHeader.cpp)
-set(HEADER_FILES http/Utilities.h http/ResponseHeader.h http/Response.h http/RequestHeader.h)
+set(HEADER_FILES http/Utilities.h http/ResponseHeader.h http/Response.h http/RequestHeader.h http/Constants.h)
 
 add_executable(http_server ${SOURCE_FILES})

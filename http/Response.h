@@ -8,8 +8,8 @@ public:
     ~Response();
 
     char *serialize();
-    void setBody(std::string contentType, char *messageBody, int length);
-    void setHeader(ResponseHeader *responseHeader);
+    void setBody(std::string contentType, char *, int length);
+    void setHeader(ResponseHeader *);
 
 private:
     ResponseHeader *responseHeader;
