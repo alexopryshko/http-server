@@ -1,6 +1,12 @@
 #include <iostream>
 #include <vector>
 
+namespace characters {
+    std::string SP = " ";
+    std::string CRLF = "\r\n";
+    std::string LF = "\n";
+}
+
 class Utilities {
 public:
     static std::vector<std::string> split(std::string data, std::string delimiter) {
