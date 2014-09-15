@@ -8,20 +8,17 @@
 #include <thread>
 #include <string>
 
-
-
-
 /* Функция обратного вызова для события: данные готовы для чтения в buf_ev */
 static void echo_read_cb( struct bufferevent *buf_ev, void *arg )
 {
     struct evbuffer *buf_input = bufferevent_get_input(buf_ev);
     struct evbuffer *buf_output = bufferevent_get_output(buf_ev);
     /* Данные просто копируются из буфера ввода в буфер вывода */
-    size_t size = evbuffer_get_length(buf_input);
-    char *data = new char[size];
-    evbuffer_remove(buf_input, data, size);
-    //evbuffer_add_buffer(buf_output, buf_input);
-    perror(data);
+    //size_t size = evbuffer_get_length(buf_input);
+    //char *data = new char[size];
+    //evbuffer_remove(buf_input, data, size);
+    evbuffer_add_buffer(buf_output, buf_input);
+    //perror(data);
 }
 
 static void echo_event_cb( struct bufferevent *buf_ev, short events, void *arg )

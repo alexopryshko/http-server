@@ -1,26 +1,26 @@
-#include "Response.h"
+#include "response.h"
 
-Response::Response() {
+response::response() {
     responseHeader = NULL;
     messageBody = NULL;
 }
 
-Response::~Response() {
+response::~response() {
     delete(responseHeader);
     delete []messageBody;
 }
 
-void Response::setBody(std::string contentType, char *messageBody, int length) {
+void response::setBody(std::string contentType, char *messageBody, int length) {
     this->messageBody = messageBody;
     responseHeader->setContentLength(length);
     responseHeader->setContentType(contentType);
 }
 
-void Response::setHeader(ResponseHeader *responseHeader) {
+void response::setHeader(response_header *responseHeader) {
     this->responseHeader = responseHeader;
 }
 
-char *Response::serialize() {
+char *response::serialize() {
     std::string header = responseHeader->getHeader();
     char *buffer = new char[header.size() + responseHeader->getContentLength()];
     strcat(buffer, header.c_str());

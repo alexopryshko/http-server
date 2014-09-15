@@ -1,11 +1,11 @@
 #include <iostream>
-#include "Utilities.h"
-#include "Constants.h"
+#include "utilities.h"
+#include "constants.h"
 
-class ResponseHeader {
+class response_header {
 public:
-    ResponseHeader();
-    ~ResponseHeader() {};
+    response_header();
+    ~response_header() {};
 
     void setStatusCode(int statusCode, std::string reasonPhrase);
     void setContentType(std::string contentType);

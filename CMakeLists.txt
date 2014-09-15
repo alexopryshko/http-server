@@ -5,7 +5,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-levent")
 set(CMAKE_CXX_FLAGS "-std=c++0x")
 
 
-set(SOURCE_FILES main.cpp http/ResponseHeader.cpp http/Response.cpp http/RequestHeader.cpp)
-set(HEADER_FILES http/Utilities.h http/ResponseHeader.h http/Response.h http/RequestHeader.h http/Constants.h)
+set(SOURCE_FILES main.cpp http/response_header.cpp http/response.cpp http/request_header.cpp)
+set(HEADER_FILES http/utilities.h http/response_header.h http/response.h http/request_header.h http/constants.h)
 
 add_executable(http_server ${SOURCE_FILES})

@@ -1,9 +1,9 @@
 #include <string>
 
-class RequestHeader {
+class request_header {
 public:
-    RequestHeader() {};
-    RequestHeader(std::string data);
+    request_header() {};
+    request_header(std::string data);
 
     std::string getPath() { return path; }
     std::string getMethod() { return method; }

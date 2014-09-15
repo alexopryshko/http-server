@@ -1,25 +1,25 @@
-#include "ResponseHeader.h"
+#include "response_header.h"
 
-ResponseHeader::ResponseHeader() {
+response_header::response_header() {
     httpVersion = "HTTP/1.1";
     date = time(0);
     server = "tech-mail.ru http-server (via alexopryshko)";
 }
 
-void ResponseHeader::setContentLength(int contentLength) {
+void response_header::setContentLength(int contentLength) {
     this->contentLength = contentLength;
 }
 
-void ResponseHeader::setContentType(std::string contentType) {
+void response_header::setContentType(std::string contentType) {
     this->contentType = contentType;
 }
 
-void ResponseHeader::setStatusCode(int statusCode, std::string reasonPhrase) {
+void response_header::setStatusCode(int statusCode, std::string reasonPhrase) {
     this->statusCode = statusCode;
     this->reasonPhrase = reasonPhrase;
 }
 
-std::string ResponseHeader::getHeader() {
+std::string response_header::getHeader() {
     std::string buffer = "";
     buffer += httpVersion;
     buffer += SplitChars::SP;

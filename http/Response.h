@@ -1,17 +1,17 @@
 #include <iostream>
 #include <ctime>
-#include "ResponseHeader.h"
+#include "response_header.h"
 
-class Response {
+class response {
 public:
-    Response();
-    ~Response();
+    response();
+    ~response();
 
     char *serialize();
     void setBody(std::string contentType, char *, int length);
-    void setHeader(ResponseHeader *);
+    void setHeader(response_header *);
 
 private:
-    ResponseHeader *responseHeader;
+    response_header *responseHeader;
     char *messageBody;
 };

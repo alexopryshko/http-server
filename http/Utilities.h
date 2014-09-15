@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-class Utilities {
+class utilities {
 public:
     static std::vector<std::string> split(std::string data, std::string delimiter) {
         std::vector<std::string> buffer;
