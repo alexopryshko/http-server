@@ -24,14 +24,15 @@ void thread_pool::thread_function(int thread_id, thread_pool *_thread_pool) {
     _thread_pool->factories_locker.unlock();
     while (_thread_pool->is_threads_run) {
         std::unique_lock<std::mutex> _locker(_thread_pool->wait_locker);
-        _thread_pool->cv.wait(_locker, [&](){ return _thread_pool->active_threads[thread_id] ||
-                !_thread_pool->is_threads_run; });
+        //_thread_pool->cv.wait(_locker, [&](){ return _thread_pool->active_threads[thread_id] ||
+        //        !_thread_pool->is_threads_run; });
         //std::cerr << "unlock thread: " + std::to_string(thread_id) << std::endl;
         _factory->job();
-        std::cerr << "after job thread: " + std::to_string(thread_id) << std::endl;
-        _thread_pool->factories_locker.lock();
-        _thread_pool->active_threads[thread_id] = false;
-        _thread_pool->factories_locker.unlock();
+        usleep(5);
+        //std::cerr << "after job thread: " + std::to_string(thread_id) << std::endl;
+        //_thread_pool->factories_locker.lock();
+        //_thread_pool->active_threads[thread_id] = false;
+        //_thread_pool->factories_locker.unlock();
     }
 }
 
@@ -64,7 +65,7 @@ void thread_pool::shift_queue() {
     active_threads[_factory->get_parent_id_thread()] = true;
     active_threads_locker.unlock();
 
-    cv.notify_all();
+    //cv.notify_all();
 }
 
 

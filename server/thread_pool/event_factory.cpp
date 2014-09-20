@@ -1,6 +1,5 @@
 #include "event_factory.h"
 
-#include <iostream>
 
 event_factory::event_factory() {
     base = event_base_new();
@@ -15,13 +14,11 @@ void event_factory::add(evutil_socket_t fd) {
     struct bufferevent *buf_ev = bufferevent_socket_new( this->base, fd, BEV_OPT_CLOSE_ON_FREE );
     bufferevent_setcb( buf_ev, echo_read_cb, NULL, echo_event_cb, NULL );
     bufferevent_enable( buf_ev, (EV_READ | EV_WRITE) );
-
-    //event_base_loopbreak(base);
-    //std::cerr << "thread event factory: " + std::to_string(this->get_parent_id_thread()) << "\n";
 }
 
 void event_factory::job() {
-    event_base_dispatch(base);
+    event_base_loop(base, EVLOOP_NONBLOCK);
+    //event_base_dispatch(base);
 }
 
 void event_factory::echo_event_cb(struct bufferevent *buf_ev, short events, void *arg) {
@@ -29,8 +26,6 @@ void event_factory::echo_event_cb(struct bufferevent *buf_ev, short events, void
         perror( "Ошибка объекта bufferevent" );
     if( events & (BEV_EVENT_EOF | BEV_EVENT_ERROR) )
         bufferevent_free( buf_ev );
-
-    std::cerr << "Error bufferevent\n";
 }
 
 void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
@@ -40,5 +35,5 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
     evbuffer_add(buf_output,
             (void *) "HTTP/1.1 200 OK\r\nServer: nginx/1.2.4\r\nDate: Sun, 14 Sep 2014 18:35:55 GMT\r\nContent-Type: text/html; charset=windows-1251\r\nContent-Length: 44\r\nConnection: close\r\n\r\n <html><body><h1>It works!</h1></body></html>",
             strlen(  "HTTP/1.1 200 OK\r\nServer: nginx/1.2.4\r\nDate: Sun, 14 Sep 2014 18:35:55 GMT\r\nContent-Type: text/html; charset=windows-1251\r\nContent-Length: 44\r\nConnection: close\r\n\r\n <html><body><h1>It works!</h1></body></html>"));
-    std::cerr << "recive message\n";
+    //std::cerr << "recive message\n";
 }
