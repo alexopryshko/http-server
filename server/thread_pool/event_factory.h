@@ -4,6 +4,8 @@
 #include <event2/buffer.h>
 #include <thread>
 
+#include "../../file_system/file_system.h"
+
 class event_factory {
 public:
     event_factory();

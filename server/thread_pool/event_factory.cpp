@@ -1,5 +1,5 @@
+#include <Python/Python.h>
 #include "event_factory.h"
-
 
 event_factory::event_factory() {
     base = event_base_new();
@@ -32,6 +32,7 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
     struct evbuffer *buf_input = bufferevent_get_input(buf_ev);
     struct evbuffer *buf_output = bufferevent_get_output(buf_ev);
     //evbuffer_add_buffer(buf_output, buf_input);
+
     evbuffer_add(buf_output,
             (void *) "HTTP/1.1 200 OK\r\nServer: nginx/1.2.4\r\nDate: Sun, 14 Sep 2014 18:35:55 GMT\r\nContent-Type: text/html; charset=windows-1251\r\nContent-Length: 44\r\nConnection: close\r\n\r\n <html><body><h1>It works!</h1></body></html>",
             strlen(  "HTTP/1.1 200 OK\r\nServer: nginx/1.2.4\r\nDate: Sun, 14 Sep 2014 18:35:55 GMT\r\nContent-Type: text/html; charset=windows-1251\r\nContent-Length: 44\r\nConnection: close\r\n\r\n <html><body><h1>It works!</h1></body></html>"));

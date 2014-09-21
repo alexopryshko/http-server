@@ -14,7 +14,7 @@ thread_pool::thread_pool(int number_of_workers) {
 }
 
 void thread_pool::thread_function(int thread_id, thread_pool *_thread_pool) {
-    std::cerr << "Start thread " + std::to_string(thread_id) << std::endl;
+    //std::cerr << "Start thread " + std::to_string(thread_id) << std::endl;
 
     event_factory *_factory = new event_factory();
     _factory->set_parent_id_thread(thread_id);
@@ -23,7 +23,7 @@ void thread_pool::thread_function(int thread_id, thread_pool *_thread_pool) {
     _thread_pool->factories.push(_factory);
     _thread_pool->factories_locker.unlock();
     while (_thread_pool->is_threads_run) {
-        std::unique_lock<std::mutex> _locker(_thread_pool->wait_locker);
+        //std::unique_lock<std::mutex> _locker(_thread_pool->wait_locker);
         //_thread_pool->cv.wait(_locker, [&](){ return _thread_pool->active_threads[thread_id] ||
         //        !_thread_pool->is_threads_run; });
         //std::cerr << "unlock thread: " + std::to_string(thread_id) << std::endl;
