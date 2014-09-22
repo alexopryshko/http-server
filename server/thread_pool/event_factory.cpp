@@ -17,7 +17,8 @@ void event_factory::add(evutil_socket_t fd) {
 }
 
 void event_factory::job() {
-    event_base_loop(base, EVLOOP_NONBLOCK);
+    event_base_loop(base, 0);
+    //event_base_loop(base, EVLOOP_NONBLOCK);
     //event_base_dispatch(base);
 }
 
