@@ -3,6 +3,10 @@
 #include <event2/bufferevent.h>
 #include <event2/buffer.h>
 #include <thread>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "../../file_system/file_system.h"
 
@@ -13,9 +17,11 @@ public:
     void set_parent_id_thread(int parent_id_thread);
     int get_parent_id_thread() {return parent_id_thread;}
     void add(evutil_socket_t fd);
+
 private:
     event_base *base;
     int parent_id_thread;
     static void echo_read_cb( struct bufferevent *buf_ev, void *arg );
+    static void echo_write_cb(struct bufferevent *buf_ev, void *arg);
     static void echo_event_cb( struct bufferevent *buf_ev, short events, void *arg );
 };

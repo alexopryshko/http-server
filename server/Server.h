@@ -3,7 +3,6 @@
 #include <event2/buffer.h>
 #include "thread_pool/event_factory.h"
 #include "thread_pool/thread_pool.h"
-#include "socket_exception.h"
 
 class server {
 public:
