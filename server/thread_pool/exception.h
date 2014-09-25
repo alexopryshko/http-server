@@ -9,3 +9,9 @@ public:
     not_found() {};
     ~not_found() throw() {};
 };
+
+class forbidden : public std::exception {
+public:
+    forbidden() {};
+    ~forbidden() throw() {};
+};

@@ -18,7 +18,8 @@ std::map<std::string, std::string> response_content = {
         {"unknown", "application/octet-stream"}
 };
 
-std::regex extension_regex("\\.([^.]+)$");
+//std::regex extension_regex("\\.([^.]+)$");
+std::regex extension_regex("\\.([\\w]+)\\/?$");
 
 response_header::response_header() {
     http_version = "HTTP/1.1";
@@ -28,22 +29,6 @@ response_header::response_header() {
 
 void response_header::set_content_length(long _content_length) {
     content_length = _content_length;
-}
-
-bool response_header::set_content_type_from_path(std::string path) {
-    std::smatch extension;
-    if (std::regex_search(path, extension, extension_regex) && extension.size() > 0) {
-        try {
-            content_type = response_content.at(extension[1]);
-        }
-        catch (...) {
-            content_type = "application/octet-stream";
-        }
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 void response_header::set_content_type(std::string _content_type) {
@@ -71,16 +56,17 @@ std::string response_header::getHeader() {
     buffer += std::to_string(status_code);
     buffer += SplitChars::SP;
     buffer += reason_phrase;
-    buffer += SplitChars::LF;
+    buffer += SplitChars::CRLF;
+    //buffer += SplitChars::LF;
     buffer += "Connection: close";
-    buffer += SplitChars::LF;
+    buffer += SplitChars::CRLF;
     std::string strData(ctime(&date));
     buffer += "Date: " + strData;
     buffer += "Server: " + server;
-    buffer += SplitChars::LF;
+    buffer += SplitChars::CRLF;
     buffer += "Content-Length: " + std::to_string(content_length);
-    buffer += SplitChars::LF;
-    buffer += "Content-Type: " + content_type + "; " + "charset='utf-8'";
+    buffer += SplitChars::CRLF;
+    buffer += "Content-Type: " + content_type;// + "; " + "charset='utf-8'";
     buffer += SplitChars::CRLF + SplitChars::CRLF;
 
     return buffer;

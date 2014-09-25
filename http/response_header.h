@@ -8,10 +8,8 @@ public:
     response_header();
 
     void set_status_code(int _status_code);
-    bool set_content_type_from_path(std::string path);
     void set_content_type(std::string _content_type);
     void set_content_length(long _content_length);
-    long get_content_length() { return content_length; }
 
     std::string getHeader();
 
