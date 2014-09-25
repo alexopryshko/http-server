@@ -8,8 +8,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "../../file_system/file_system.h"
-
 class event_factory {
 public:
     event_factory();

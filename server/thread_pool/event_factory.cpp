@@ -56,6 +56,9 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
         if (!(_request_header->get_method() == "GET" || _request_header->get_method() == "HEAD")) {
             throw bad_request();
         }
+        if (!check_path(_request_header->get_path())) {
+            throw forbidden();
+        }
         file_path += _request_header->get_path();
         if (file_path.back() == '/') {
             file_path += "index.html";
