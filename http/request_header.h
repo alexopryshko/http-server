@@ -1,18 +1,19 @@
+#pragma once
 #include <string>
+#include <regex>
 
 class request_header {
 public:
     request_header() {};
-    request_header(std::string data);
 
-    std::string getPath() { return path; }
-    std::string getMethod() { return method; }
-    std::string getHttpVersion() { return httpVersion; }
+    std::string get_path() { return path; }
+    std::string get_method() { return method; }
+    std::string get_http_version() { return http_version; }
+    bool parse(unsigned char* data, long size);
 
 private:
     std::string method;
     std::string path;
-    std::string httpVersion;
+    std::string http_version;
 
-    void parse(std::string data);
 };
