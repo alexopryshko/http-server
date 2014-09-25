@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <regex>
+#include "utility.h"
 
 class request_header {
 public:
