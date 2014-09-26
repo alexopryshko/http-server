@@ -1,8 +1,8 @@
 #include <event2/listener.h>
 #include <event2/bufferevent.h>
 #include <event2/buffer.h>
-#include "thread_pool/event_factory.h"
-#include "thread_pool/thread_pool.h"
+#include "event_factory.h"
+#include "thread_pool.h"
 
 class server {
 public:

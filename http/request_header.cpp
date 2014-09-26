@@ -1,5 +1,6 @@
 #include "request_header.h"
 #include <iostream>
+
 std::regex request_line_regex("(GET|PUT|POST|DELETE|HEAD)\\s(\\/[^\\?]*)\\?{0,1}(.*)\\s(\\S+)");
 
 bool request_header::parse(unsigned char* data, long size) {
@@ -19,7 +20,9 @@ bool request_header::parse(unsigned char* data, long size) {
         http_version = request_line[4];
     }
     else {
+        //delete (data);
         return false;
     }
+    //delete (data);
     return true;
 }

@@ -42,5 +42,9 @@ void server::accept_error(struct evconnlistener *listener, void *arg) {
     int error = EVUTIL_SOCKET_ERROR();
     fprintf( stderr, "Ошибка %d (%s) в мониторе соединений. Завершение работы.\n",
             error, evutil_socket_error_to_string( error ) );
+    if (*((int *)arg) > 0) {
+        close(*((int *)arg));
+    }
+    delete (int *) arg;
     event_base_loopexit( base, NULL );
 }
