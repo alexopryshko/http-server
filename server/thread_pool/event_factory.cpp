@@ -32,7 +32,7 @@ void event_factory::echo_event_cb(struct bufferevent *buf_ev, short events, void
         perror( "Ошибка объекта bufferevent" );
     if( events & (BEV_EVENT_EOF | BEV_EVENT_ERROR) )
         bufferevent_free( buf_ev );
-    //free(arg);
+    free(arg);
 }
 
 void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
@@ -102,6 +102,6 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
 }
 
 void event_factory::echo_write_cb(struct bufferevent *buf_ev, void *arg) {
-    //free(arg);
+    free(arg);
     bufferevent_free(buf_ev);
 }
