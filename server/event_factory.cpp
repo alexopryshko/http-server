@@ -27,8 +27,8 @@ void event_factory::job() {
 }
 
 void event_factory::echo_event_cb(struct bufferevent *buf_ev, short events, void *arg) {
-    if( events & BEV_EVENT_ERROR )
-        perror( "Ошибка объекта bufferevent" );
+    //if( events & BEV_EVENT_ERROR )
+    //    perror( "Ошибка объекта bufferevent" );
     if( events & (BEV_EVENT_EOF | BEV_EVENT_ERROR) )
         bufferevent_free( buf_ev );
     if (*((int *)arg) > 0) {
@@ -64,9 +64,7 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
             file_path += "index.html";
             index_directory = true;
         }
-        //FILE *pFile = fopen(file_path.c_str(), "r");
-        file_descriptor = open(file_path.c_str(), O_RDONLY | O_NONBLOCK);
-        //file_descriptor = fileno(pFile);
+        file_descriptor = open(file_path.c_str(), O_RDONLY | O_NONBLOCK | O_SYNC | O_DSYNC);
         file_d = (int*)arg;
         *file_d = file_descriptor;
         if (file_descriptor < 0) {
@@ -106,15 +104,15 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
     if (send_file) {
         evbuffer_add_file(buf_output, file_descriptor, 0, file_stat.st_size);
     }
-    bufferevent_enable(buf_ev, (EV_WRITE));
+    //bufferevent_enable(buf_ev, (EV_WRITE));
     delete(_request_header);
     delete(_response_header);
 }
 
 void event_factory::echo_write_cb(struct bufferevent *buf_ev, void *arg) {
-    if (*((int *)arg) > 0) {
-        close(*((int *)arg));
-    }
-    delete (int *) arg;
     bufferevent_free(buf_ev);
+    if (*((int *)arg) > 0) {
+        //close(*((int *)arg));
+    }
+    delete(arg);
 }
