@@ -1,9 +1,8 @@
 #include "event_factory.h"
 #include "../../http/request_header.h"
 #include "../../http/response_header.h"
-#include "../../http/utility.h"
+//#include "../../http/utility.h"
 #include "exception.h"
-
 
 
 std::string document_root = "/Users/alexander/Development/http-server/data/http-test-suite";
@@ -18,17 +17,14 @@ void event_factory::set_parent_id_thread(int parent_id_thread) {
 }
 
 void event_factory::add(evutil_socket_t fd) {
-    struct bufferevent *buf_ev = bufferevent_socket_new( this->base, fd, BEV_OPT_CLOSE_ON_FREE );
-    //FILE * file = NULL;
-    bufferevent_setcb(buf_ev, echo_read_cb, echo_write_cb/*set drop call back */, echo_event_cb, NULL);
-    //bufferevent_enable( buf_ev, (EV_READ | EV_WRITE) );
+    struct bufferevent *buf_ev = bufferevent_socket_new( this->base, fd, BEV_OPT_CLOSE_ON_FREE);
+    int *file_d = new int();
+    bufferevent_setcb(buf_ev, echo_read_cb, echo_write_cb, echo_event_cb, file_d);
     bufferevent_enable( buf_ev, (EV_READ) );
 }
 
 void event_factory::job() {
     event_base_loop(base, 0);
-    //event_base_loop(base, EVLOOP_NONBLOCK);
-    //event_base_dispatch(base);
 }
 
 void event_factory::echo_event_cb(struct bufferevent *buf_ev, short events, void *arg) {
@@ -36,6 +32,7 @@ void event_factory::echo_event_cb(struct bufferevent *buf_ev, short events, void
         perror( "Ошибка объекта bufferevent" );
     if( events & (BEV_EVENT_EOF | BEV_EVENT_ERROR) )
         bufferevent_free( buf_ev );
+    //free(arg);
 }
 
 void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
@@ -65,6 +62,8 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
             index_directory = true;
         }
         file_descriptor = open(file_path.c_str(), O_RDONLY | O_NONBLOCK);
+        int *file_d = (int*)arg;
+        *file_d = file_descriptor;
         if (file_descriptor < 0) {
             if (index_directory)
                 throw forbidden();
@@ -98,9 +97,11 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
         evbuffer_add_file(buf_output, file_descriptor, 0, file_stat.st_size);
     }
     bufferevent_enable(buf_ev, (EV_WRITE));
+    //delete(_request_header);
+    //delete(_response_header);
 }
 
 void event_factory::echo_write_cb(struct bufferevent *buf_ev, void *arg) {
-    free(arg);
+    //free(arg);
     bufferevent_free(buf_ev);
 }

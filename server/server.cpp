@@ -32,16 +32,9 @@ void server::run() {
 }
 
 void server::accept(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *addr, int sock_len, void *arg) {
-
-
     thread_pool *_thread_pool = (thread_pool*) arg;
-
     _thread_pool->get_factory()->add(fd);
-
     _thread_pool->shift_queue();
-
-    //std::cerr << "accept connection\n";
-
 }
 
 void server::accept_error(struct evconnlistener *listener, void *arg) {

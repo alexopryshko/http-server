@@ -13,7 +13,6 @@ public:
     thread_pool(int count);
 
     void run();
-    void stop() {};
     event_factory *get_factory();
     void shift_queue();
 
@@ -21,12 +20,7 @@ public:
 
     bool is_threads_run;
     std::queue<event_factory*> factories;
-    bool *active_threads;
     std::mutex factories_locker;
-    std::mutex active_threads_locker;
-    std::mutex wait_locker;
-    std::condition_variable cv;
-
 private:
     long number_of_workers;
 };
