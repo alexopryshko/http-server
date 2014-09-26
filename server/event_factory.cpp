@@ -1,7 +1,6 @@
 #include "event_factory.h"
-#include "../../http/request_header.h"
-#include "../../http/response_header.h"
-//#include "../../http/utility.h"
+#include "../http/request_header.h"
+#include "../http/response_header.h"
 #include "exception.h"
 
 
@@ -32,7 +31,10 @@ void event_factory::echo_event_cb(struct bufferevent *buf_ev, short events, void
         perror( "Ошибка объекта bufferevent" );
     if( events & (BEV_EVENT_EOF | BEV_EVENT_ERROR) )
         bufferevent_free( buf_ev );
-    free(arg);
+    if (*((int *)arg) > 0) {
+        close(*((int *)arg));
+    }
+    delete ((int *)arg);
 }
 
 void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
@@ -46,12 +48,13 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
     std::string file_path = document_root;
     struct stat file_stat;
     int file_descriptor = -1;
+    int *file_d = (int*)arg;
     try {
         if (!_request_header->parse(evbuffer_pullup(buf_input, buffer_input_size), buffer_input_size)) {
             throw bad_request();
         }
         if (!(_request_header->get_method() == "GET" || _request_header->get_method() == "HEAD")) {
-            throw bad_request();
+            throw method_not_allowed();
         }
         if (!check_path(_request_header->get_path())) {
             throw forbidden();
@@ -61,8 +64,10 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
             file_path += "index.html";
             index_directory = true;
         }
+        //FILE *pFile = fopen(file_path.c_str(), "r");
         file_descriptor = open(file_path.c_str(), O_RDONLY | O_NONBLOCK);
-        int *file_d = (int*)arg;
+        //file_descriptor = fileno(pFile);
+        file_d = (int*)arg;
         *file_d = file_descriptor;
         if (file_descriptor < 0) {
             if (index_directory)
@@ -80,17 +85,22 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
     catch (bad_request) {
         _response_header->set_content_type("html");
         _response_header->set_content_length(0);
-        _response_header->set_status_code(405);
+        _response_header->set_status_code(400);
+    }
+    catch (forbidden) {
+        _response_header->set_content_type("html");
+        _response_header->set_content_length(0);
+        _response_header->set_status_code(403);
     }
     catch (not_found) {
         _response_header->set_content_type("html");
         _response_header->set_content_length(0);
         _response_header->set_status_code(404);
     }
-    catch (forbidden) {
+    catch (method_not_allowed) {
         _response_header->set_content_type("html");
         _response_header->set_content_length(0);
-        _response_header->set_status_code(403);
+        _response_header->set_status_code(405);
     }
     evbuffer_add_printf(buf_output, _response_header->getHeader().c_str());
     if (send_file) {
@@ -102,6 +112,9 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
 }
 
 void event_factory::echo_write_cb(struct bufferevent *buf_ev, void *arg) {
-    free(arg);
+    if (*((int *)arg) > 0) {
+        close(*((int *)arg));
+    }
+    delete (int *) arg;
     bufferevent_free(buf_ev);
 }
