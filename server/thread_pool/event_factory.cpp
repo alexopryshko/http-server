@@ -97,8 +97,8 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
         evbuffer_add_file(buf_output, file_descriptor, 0, file_stat.st_size);
     }
     bufferevent_enable(buf_ev, (EV_WRITE));
-    //delete(_request_header);
-    //delete(_response_header);
+    delete(_request_header);
+    delete(_response_header);
 }
 
 void event_factory::echo_write_cb(struct bufferevent *buf_ev, void *arg) {
