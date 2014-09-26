@@ -71,7 +71,7 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
                 throw not_found();
         }
         fstat(file_descriptor, &file_stat);
-        _response_header->set_content_type(get_file_type(_request_header->get_path()));
+        _response_header->set_content_type(get_file_type(file_path));
         _response_header->set_content_length(file_stat.st_size);
         _response_header->set_status_code(200);
         if (_request_header->get_method() != "HEAD")
