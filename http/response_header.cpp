@@ -60,8 +60,12 @@ std::string response_header::getHeader() {
     //buffer += SplitChars::LF;
     buffer += "Connection: close";
     buffer += SplitChars::CRLF;
-    std::string strData(ctime(&date));
-    buffer += "Date: " + strData;
+    struct tm *info = gmtime(&date);
+    char buf[32];
+    strftime(buf, 32, "%a, %d %b %Y %X ", info);
+    std::string strData(buf);
+    buffer += "Date: " + strData + "GMT";
+    buffer += SplitChars::CRLF;
     buffer += "Server: " + server;
     buffer += SplitChars::CRLF;
     buffer += "Content-Length: " + std::to_string(content_length);
