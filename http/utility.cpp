@@ -7,6 +7,7 @@ std::string get_file_type(std::string path) {
     if (std::regex_search(path, extension, extension_regex) && extension.size() > 0) {
         return extension[1];
     }
+    return "";
 }
 
 const char HEX2DEC[256] = {
@@ -59,16 +60,16 @@ std::string path_decoder(std::string sSrc) {
     return sResult;
 }
 
+/*
+
+ */
+
 bool check_path(std::string path) {
     int depth_paths = 0;
     for (int i = 0; i < path.length() - 1; i++) {
         if (path[i] == '.' && path[i+1] == '.') {
-                depth_paths-=2;
-        }
-        else if (path[i] =='/')
-            depth_paths++;
-        if (depth_paths < 0)
             return false;
+        }
     }
     return true;
 }
