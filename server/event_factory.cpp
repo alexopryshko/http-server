@@ -65,7 +65,6 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
             index_directory = true;
         }
         file_descriptor = open(file_path.c_str(), O_RDONLY | O_NONBLOCK | O_SYNC | O_DSYNC);
-        file_d = (int*)arg;
         *file_d = file_descriptor;
         if (file_descriptor < 0) {
             if (index_directory)
@@ -112,7 +111,7 @@ void event_factory::echo_read_cb(struct bufferevent *buf_ev, void *arg) {
 void event_factory::echo_write_cb(struct bufferevent *buf_ev, void *arg) {
     bufferevent_free(buf_ev);
     if (*((int *)arg) > 0) {
-        //close(*((int *)arg));
+        close(*((int *)arg));
     }
-    delete(arg);
+    delete((int*)arg);
 }
